@@ -2,36 +2,36 @@ from airflow.models import DAG
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
-import extract_api_ecommerce 
+from extract_api_ecommerce import test, extractCarts, extractProducts, extractUsers
 
 with DAG(
-    'Extract API test',
+    'extract_api_test',
     start_date=days_ago(1),
     schedule_interval='@daily'
 ) as dag:
-    
+        
     Test = PythonOperator(
-        task_id= 'Test',
-        callable = extract_api_ecommerce.test
+        task_id= 'test',
+        python_callable=test
     )
     
     Users = PythonOperator(
-        task_id= 'Users',
-        callable = extract_api_ecommerce.extractUsers
+        task_id= 'users',
+        python_callable=extractUsers
     )
 
     Carts = PythonOperator(
-        task_id= 'Carts',
-        callable = extract_api_ecommerce.extractCarts
+        task_id= 'carts',
+        python_callable=extractCarts
     )
 
     Products = PythonOperator(
-        task_id= 'Products',
-        callable = extract_api_ecommerce.extractProducts
+        task_id= 'products',
+        python_callable=extractProducts
     )
 
     Success = EmptyOperator(
-        task_id='Success'
+        task_id='success'
     )
 
 Test >> [Users, Carts, Products] >> Success
