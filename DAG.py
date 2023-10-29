@@ -13,8 +13,8 @@ with DAG(
     start_date=days_ago(1),
     schedule_interval='@daily'
 ) as dag:
-    os.environ['PATH'] = '/usr/bin/git:' + os.environ['PATH']
     
+
     Sync = BashOperator(
         task_id= 'git_pull',
         bash_command="git pull"
