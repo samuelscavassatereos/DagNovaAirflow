@@ -6,14 +6,15 @@ from airflow.operators.bash import BashOperator
 from DagNovaAirflow.extract_api_ecommerce import test, extractCarts, extractProducts, extractUsers
 import os
 
-os.environ['PATH'] = '/usr/bin/git:' + os.environ['PATH']
+
 
 with DAG(
     'extract_api_test',
     start_date=days_ago(1),
     schedule_interval='@daily'
 ) as dag:
-
+    os.environ['PATH'] = '/usr/bin/git:' + os.environ['PATH']
+    
     Sync = BashOperator(
         task_id= 'git_pull',
         bash_command="git pull"
