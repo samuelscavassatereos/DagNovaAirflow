@@ -4,6 +4,9 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.bash import BashOperator
 from DagNovaAirflow.extract_api_ecommerce import test, extractCarts, extractProducts, extractUsers
+import os
+
+os.environ['PATH'] = '/usr/bin/git:' + os.environ['PATH']
 
 with DAG(
     'extract_api_test',
