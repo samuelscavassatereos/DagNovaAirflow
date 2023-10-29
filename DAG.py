@@ -13,7 +13,7 @@ with DAG(
 
     Sync = BashOperator(
         task_id= 'git_pull',
-        bash_command="cd /dags/DagNovaAirflow && git pull"
+        bash_command="cd /DagNovaAirflow && git pull"
     )
 
     Test = PythonOperator(
