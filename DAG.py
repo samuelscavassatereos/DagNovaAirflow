@@ -2,6 +2,7 @@ from airflow.models import DAG
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
+from airflow.operators.bash import BashOperator
 
 from DagNovaAirflow.extract_api_ecommerce import test, extractCarts, extractProducts, extractUsers
 
@@ -13,6 +14,11 @@ with DAG(
     start_date=days_ago(1),
     schedule_interval='@daily'
 ) as dag:
+
+    Git = BashOperator(
+        task_id = 'git_pull',
+        bash_command='cd /opt/airflow/dags/DagNovaAirflow && git pull'
+    )
 
     Test = PythonOperator(
         task_id= 'test',
@@ -38,4 +44,4 @@ with DAG(
         task_id='success'
     )
 
-Test >> [Users, Carts, Products] >> Success
+Git >> Test >> [Users, Carts, Products] >> Success
